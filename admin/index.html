@@ -61,7 +61,6 @@
             padding: 10px 20px;
             height: auto;
             margin: 20px 0 0 30px;
-
         }
         
         .article h2 {
@@ -72,7 +71,6 @@
         .text-and-image {
             display: flex;
             gap: 20px;
-
         }
         
         .text-and-image p {
@@ -87,6 +85,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         
         .footer {
@@ -113,72 +112,309 @@
         .footer p {
             margin: 5px 0;
         }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: #333;
+            color: white;
+            padding: 10px;
+            border-bottom-left-radius: 10px;
+            z-index: 1000;
+        }
+        
+        .editable {
+            position: relative;
+            border: 2px dashed transparent;
+            padding: 4px;
+            min-height: 20px;
+        }
+        
+        .editable:hover {
+            border: 2px dashed #f00;
+            cursor: pointer;
+        }
+        
+        .image-upload-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .image-placeholder:hover .image-upload-btn {
+            display: block;
+        }
+        
+        .link-edit-btn {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            display: none;
+            font-size: 10px;
+            vertical-align: middle;
+        }
+        
+        a:hover .link-edit-btn {
+            display: inline-block;
+        }
+        
+        .save-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .image-edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .modal-buttons button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .apply-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
-
+    <div class="admin-panel">
+        <h3>Admin Mode</h3>
+        <p>Click on any text to edit</p>
+        <button class="save-btn" onclick="saveChanges()">Save Changes</button>
+    </div>
     
     <div class="container">
         <nav class="nav-box">
-            <div class="logo-box">ADMIN PAGE</div>
+            <div class="logo-box editable" onclick="makeEditable(this)">LOGO</div>
 
             <ul class="navbar">
-
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Blog</a></li>
-
+                <li><a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
+                <li><a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
+                <li><a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
             </ul>
         </nav>
         
         <div class="content-box">
             <div class="article">
-                <h2>A title for your first article</h2>
+                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
                 <div class="text-and-image">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                     <div class="image-placeholder">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
+                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
                     </div>
                 </div>
             </div>
             
             <div class="article">
-
-                <h2>A title for your first article</h2>
+                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
                 <div class="text-and-image">
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                     <div class="image-placeholder">
-                        
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
+                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-
             <div class="footer-info">
-                
-                <h2>Your company's name</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p>© 2024, Company's name, All rights reserved.</p>
+                <h2 class="editable" onclick="makeEditable(this)">Your company's name</h2>
+                <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="editable" onclick="makeEditable(this)">© 2024, Company's name, All rights reserved.</p>
             </div>
             
             <div class="footer-links">
-                <a href="#">Home</a>
-                <a href="#">About</a>
-                <a href="#">Blog</a>
+                <a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
             </div>
             
             <div class="footer-social">
-                <a href="#">Facebook</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">GitHub</a>
+                <a href="#" class="editable-link">Facebook<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">LinkedIn<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">GitHub<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
             </div>
         </div>
     </div>
+    
+
+    <div class="image-edit-modal">
+        <div class="modal-content">
+            <h3>Change Image</h3>
+            <input type="text" id="image-url-input" placeholder="Enter image URL">
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeImageModal()">Cancel</button>
+                <button class="apply-btn" onclick="applyImageChange()">Apply</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="image-edit-modal" id="link-edit-modal">
+        <div class="modal-content">
+            <h3>Edit Link</h3>
+            <input type="text" id="link-text-input" placeholder="Link Text">
+            <input type="text" id="link-url-input" placeholder="Link URL">
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeLinkModal()">Cancel</button>
+                <button class="apply-btn" onclick="applyLinkChange()">Apply</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+        function makeEditable(element) {
+            element.contentEditable = true;
+            element.focus();
+            
+
+            element.onblur = function() {
+                element.contentEditable = false;
+            };
+            
+
+            element.onkeydown = function(e) {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    element.blur();
+                }
+            };
+        }
+        
+
+        let currentImageElement = null;
+        
+        function editImage(button) {
+            currentImageElement = button.parentElement.querySelector('img');
+            document.getElementById('image-url-input').value = currentImageElement.src;
+            document.querySelector('.image-edit-modal').style.display = 'flex';
+        }
+        
+        function closeImageModal() {
+            document.querySelector('.image-edit-modal').style.display = 'none';
+        }
+        
+        function applyImageChange() {
+            if (currentImageElement) {
+                const newUrl = document.getElementById('image-url-input').value;
+                if (newUrl.trim() !== '') {
+                    currentImageElement.src = newUrl;
+                }
+            }
+            closeImageModal();
+        }
+        
+
+        let currentLinkElement = null;
+        
+        function editLink(button) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            currentLinkElement = button.parentElement;
+            document.getElementById('link-text-input').value = currentLinkElement.textContent.replace('Edit Link', '').trim();
+            document.getElementById('link-url-input').value = currentLinkElement.href;
+            document.getElementById('link-edit-modal').style.display = 'flex';
+        }
+        
+        function closeLinkModal() {
+            document.getElementById('link-edit-modal').style.display = 'none';
+        }
+        
+        function applyLinkChange() {
+            if (currentLinkElement) {
+                const newText = document.getElementById('link-text-input').value;
+                const newUrl = document.getElementById('link-url-input').value;
+                
+                if (newText.trim() !== '') {
+  
+                    const button = currentLinkElement.querySelector('.link-edit-btn');
+                    currentLinkElement.textContent = newText;
+                    currentLinkElement.appendChild(button);
+                }
+                
+                if (newUrl.trim() !== '') {
+                    currentLinkElement.href = newUrl;
+                }
+            }
+            closeLinkModal();
+        }
+        
+
+        function saveChanges() {
+            alert('Changes saved! In a real application, this would save to a server.');
+
+        }
+
+        window.onclick = function(event) {
+            const imageModal = document.querySelector('.image-edit-modal');
+            const linkModal = document.getElementById('link-edit-modal');
+            
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+            
+            if (event.target === linkModal) {
+                closeLinkModal();
+            }
+        };
+    </script>
 </body>
 </html>
