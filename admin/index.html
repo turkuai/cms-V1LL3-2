@@ -33,6 +33,23 @@
             margin-right: 30px;
             font-size: 24px;
             font-weight: bold;
+            position: relative;
+        }
+        
+        .edit-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
         }
         
         .navbar {
@@ -85,7 +102,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         
         .footer {
@@ -95,6 +111,7 @@
         
         .footer-info {
             flex: 1;
+            position: relative;
         }
         
         .footer-links, .footer-social {
@@ -113,160 +130,152 @@
             margin: 5px 0;
         }
         
-        /* Admin Panel Styles */
-        .admin-panel {
-            position: fixed;
-            top: 0;
-            right: 0;
-            background: #333;
-            color: white;
-            padding: 10px;
-            border-bottom-left-radius: 10px;
-            z-index: 1000;
-        }
-        
-        .editable {
+        .social-link {
+            display: flex;
+            align-items: center;
             position: relative;
-            border: 2px dashed transparent;
-            padding: 4px;
-            min-height: 20px;
         }
         
-        .editable:hover {
-            border: 2px dashed #f00;
-            cursor: pointer;
-        }
-        
-        .image-upload-btn {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(0,0,0,0.7);
+        .delete-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #ff4b4b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            padding: 5px 10px;
+            font-size: 14px;
             cursor: pointer;
-            display: none;
+            margin-left: 10px;
         }
         
-        .image-placeholder:hover .image-upload-btn {
-            display: block;
-        }
-        
-        .link-edit-btn {
-            background: rgba(0,0,0,0.7);
+        .add-icon {
+            width: 26px;
+            height: 26px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            padding: 2px 5px;
+            font-size: 20px;
             cursor: pointer;
-            margin-left: 5px;
-            display: none;
-            font-size: 10px;
-            vertical-align: middle;
+            margin-top: 15px;
+            align-self: center;
         }
         
-        a:hover .link-edit-btn {
-            display: inline-block;
-        }
-        
-        .save-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        
-        .image-edit-modal {
+        .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 1;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
         
         .modal-content {
-            background: white;
+            background-color: #fefefe;
+            margin: 15% auto;
             padding: 20px;
-            border-radius: 10px;
-            width: 400px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 5px;
         }
         
-        .modal-content input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .modal-buttons button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
         }
         
-        .apply-btn {
-            background: #4CAF50;
+        .close:hover {
+            color: black;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        .btn-primary {
+            background-color: #4285f4;
             color: white;
         }
         
-        .cancel-btn {
-            background: #f44336;
+        .btn-danger {
+            background-color: #ff4b4b;
             color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #ccc;
+            color: black;
         }
     </style>
 </head>
 <body>
-    <div class="admin-panel">
-        <h3>Admin Mode</h3>
-        <p>Click on any text to edit</p>
-        <button class="save-btn" onclick="saveChanges()">Save Changes</button>
-    </div>
-    
     <div class="container">
         <nav class="nav-box">
-            <div class="logo-box editable" onclick="makeEditable(this)">LOGO</div>
+            <div class="logo-box">
+                <span id="logo-text">LOGO</span>
+                <div class="edit-icon" onclick="editLogo()">✏️</div>
+            </div>
 
             <ul class="navbar">
-                <li><a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
-                <li><a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
-                <li><a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Blog</a></li>
             </ul>
         </nav>
         
         <div class="content-box">
             <div class="article">
-                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
+                <h2>A title for your first article</h2>
                 <div class="text-and-image">
-                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                     <div class="image-placeholder">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
-                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
+                        <img src="/api/placeholder/300/200" alt="placeholder">
                     </div>
                 </div>
             </div>
             
             <div class="article">
-                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
+                <h2>A title for your first article</h2>
                 <div class="text-and-image">
-                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                     <div class="image-placeholder">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
-                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
+                        <img src="/api/placeholder/300/200" alt="placeholder">
                     </div>
                 </div>
             </div>
@@ -274,145 +283,272 @@
         
         <div class="footer">
             <div class="footer-info">
-                <h2 class="editable" onclick="makeEditable(this)">Your company's name</h2>
-                <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p class="editable" onclick="makeEditable(this)">© 2024, Company's name, All rights reserved.</p>
+                <h2 id="company-name">Your company's name</h2>
+                <div class="edit-icon" onclick="editCompany()">✏️</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p id="copyright">© 2024, Company's name, All rights reserved.</p>
             </div>
             
             <div class="footer-links">
-                <a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
-                <a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
-                <a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
             </div>
             
-            <div class="footer-social">
-                <a href="#" class="editable-link">Facebook<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
-                <a href="#" class="editable-link">LinkedIn<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
-                <a href="#" class="editable-link">GitHub<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+            <div class="footer-social" id="social-links">
+                <!-- Social links will be populated by JavaScript -->
             </div>
         </div>
     </div>
-    
 
-    <div class="image-edit-modal">
+    <!-- Logo Edit Modal -->
+    <div id="logoModal" class="modal">
         <div class="modal-content">
-            <h3>Change Image</h3>
-            <input type="text" id="image-url-input" placeholder="Enter image URL">
-            <div class="modal-buttons">
-                <button class="cancel-btn" onclick="closeImageModal()">Cancel</button>
-                <button class="apply-btn" onclick="applyImageChange()">Apply</button>
+            <span class="close" onclick="closeModal('logoModal')">&times;</span>
+            <h3>Edit Logo Text</h3>
+            <div class="form-group">
+                <label for="logo-input">Logo Text:</label>
+                <input type="text" id="logo-input" value="LOGO">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeModal('logoModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveLogo()">Save</button>
             </div>
         </div>
     </div>
-    
 
-    <div class="image-edit-modal" id="link-edit-modal">
+    <!-- Company Edit Modal -->
+    <div id="companyModal" class="modal">
         <div class="modal-content">
-            <h3>Edit Link</h3>
-            <input type="text" id="link-text-input" placeholder="Link Text">
-            <input type="text" id="link-url-input" placeholder="Link URL">
-            <div class="modal-buttons">
-                <button class="cancel-btn" onclick="closeLinkModal()">Cancel</button>
-                <button class="apply-btn" onclick="applyLinkChange()">Apply</button>
+            <span class="close" onclick="closeModal('companyModal')">&times;</span>
+            <h3>Edit Company Information</h3>
+            <div class="form-group">
+                <label for="company-input">Company Name:</label>
+                <input type="text" id="company-input" value="Your company's name">
+            </div>
+            <div class="form-group">
+                <label for="copyright-input">Copyright Text:</label>
+                <input type="text" id="copyright-input" value="© 2024, Company's name, All rights reserved.">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeModal('companyModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveCompany()">Save</button>
             </div>
         </div>
     </div>
-    
+
+    <!-- Social Link Edit Modal -->
+    <div id="socialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('socialModal')">&times;</span>
+            <h3 id="socialModalTitle">Add Social Link</h3>
+            <div class="form-group">
+                <label for="social-name-input">Display Name:</label>
+                <input type="text" id="social-name-input" placeholder="e.g. Facebook">
+            </div>
+            <div class="form-group">
+                <label for="social-url-input">URL:</label>
+                <input type="text" id="social-url-input" placeholder="e.g. https://facebook.com">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeModal('socialModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveSocialBtn" onclick="saveSocial()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this social media link?</p>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Default social media links
+        const defaultSocialLinks = [
+            { name: "Facebook", url: "#" },
+            { name: "LinkedIn", url: "#" },
+            { name: "GitHub", url: "#" }
+        ];
 
-        function makeEditable(element) {
-            element.contentEditable = true;
-            element.focus();
-            
+        let socialLinks = [];
+        let currentSocialIndex = -1;
+        let socialToDelete = -1;
 
-            element.onblur = function() {
-                element.contentEditable = false;
-            };
-            
-
-            element.onkeydown = function(e) {
-                if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    element.blur();
-                }
-            };
-        }
-        
-
-        let currentImageElement = null;
-        
-        function editImage(button) {
-            currentImageElement = button.parentElement.querySelector('img');
-            document.getElementById('image-url-input').value = currentImageElement.src;
-            document.querySelector('.image-edit-modal').style.display = 'flex';
-        }
-        
-        function closeImageModal() {
-            document.querySelector('.image-edit-modal').style.display = 'none';
-        }
-        
-        function applyImageChange() {
-            if (currentImageElement) {
-                const newUrl = document.getElementById('image-url-input').value;
-                if (newUrl.trim() !== '') {
-                    currentImageElement.src = newUrl;
-                }
+        // Initialize page content
+        window.onload = function() {
+            // Load logo
+            const savedLogo = localStorage.getItem('cmsLogo');
+            if (savedLogo) {
+                document.getElementById('logo-text').textContent = savedLogo;
             }
-            closeImageModal();
-        }
-        
 
-        let currentLinkElement = null;
-        
-        function editLink(button) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            currentLinkElement = button.parentElement;
-            document.getElementById('link-text-input').value = currentLinkElement.textContent.replace('Edit Link', '').trim();
-            document.getElementById('link-url-input').value = currentLinkElement.href;
-            document.getElementById('link-edit-modal').style.display = 'flex';
-        }
-        
-        function closeLinkModal() {
-            document.getElementById('link-edit-modal').style.display = 'none';
-        }
-        
-        function applyLinkChange() {
-            if (currentLinkElement) {
-                const newText = document.getElementById('link-text-input').value;
-                const newUrl = document.getElementById('link-url-input').value;
-                
-                if (newText.trim() !== '') {
-  
-                    const button = currentLinkElement.querySelector('.link-edit-btn');
-                    currentLinkElement.textContent = newText;
-                    currentLinkElement.appendChild(button);
-                }
-                
-                if (newUrl.trim() !== '') {
-                    currentLinkElement.href = newUrl;
-                }
+            // Load company info
+            const savedCompanyName = localStorage.getItem('cmsCompanyName');
+            if (savedCompanyName) {
+                document.getElementById('company-name').textContent = savedCompanyName;
             }
-            closeLinkModal();
+
+            const savedCopyright = localStorage.getItem('cmsCopyright');
+            if (savedCopyright) {
+                document.getElementById('copyright').textContent = savedCopyright;
+            }
+
+            // Load social links
+            const savedSocialLinks = localStorage.getItem('cmsSocialLinks');
+            if (savedSocialLinks) {
+                socialLinks = JSON.parse(savedSocialLinks);
+            } else {
+                socialLinks = [...defaultSocialLinks];
+                localStorage.setItem('cmsSocialLinks', JSON.stringify(socialLinks));
+            }
+
+            renderSocialLinks();
+        };
+
+        function renderSocialLinks() {
+            const socialLinksContainer = document.getElementById('social-links');
+            socialLinksContainer.innerHTML = '';
+
+            socialLinks.forEach((link, index) => {
+                const linkDiv = document.createElement('div');
+                linkDiv.className = 'social-link';
+
+                const anchor = document.createElement('a');
+                anchor.href = link.url;
+                anchor.textContent = link.name;
+
+                const editIcon = document.createElement('div');
+                editIcon.className = 'edit-icon';
+                editIcon.innerHTML = '✏️';
+                editIcon.onclick = () => editSocial(index);
+
+                const deleteIcon = document.createElement('div');
+                deleteIcon.className = 'delete-icon';
+                deleteIcon.innerHTML = '✖';
+                deleteIcon.onclick = () => deleteSocial(index);
+
+                linkDiv.appendChild(anchor);
+                linkDiv.appendChild(editIcon);
+                linkDiv.appendChild(deleteIcon);
+                socialLinksContainer.appendChild(linkDiv);
+            });
+
+            // Add "Add" button
+            const addBtn = document.createElement('div');
+            addBtn.className = 'add-icon';
+            addBtn.innerHTML = '+';
+            addBtn.onclick = addSocial;
+            socialLinksContainer.appendChild(addBtn);
         }
-        
 
-        function saveChanges() {
-            alert('Changes saved! In a real application, this would save to a server.');
-
+        function editLogo() {
+            document.getElementById('logo-input').value = document.getElementById('logo-text').textContent;
+            document.getElementById('logoModal').style.display = 'block';
         }
 
+        function saveLogo() {
+            const newLogo = document.getElementById('logo-input').value.trim();
+            if (newLogo) {
+                document.getElementById('logo-text').textContent = newLogo;
+                localStorage.setItem('cmsLogo', newLogo);
+            }
+            closeModal('logoModal');
+        }
+
+        function editCompany() {
+            document.getElementById('company-input').value = document.getElementById('company-name').textContent;
+            document.getElementById('copyright-input').value = document.getElementById('copyright').textContent;
+            document.getElementById('companyModal').style.display = 'block';
+        }
+
+        function saveCompany() {
+            const companyName = document.getElementById('company-input').value.trim();
+            const copyright = document.getElementById('copyright-input').value.trim();
+            
+            if (companyName) {
+                document.getElementById('company-name').textContent = companyName;
+                localStorage.setItem('cmsCompanyName', companyName);
+            }
+            
+            if (copyright) {
+                document.getElementById('copyright').textContent = copyright;
+                localStorage.setItem('cmsCopyright', copyright);
+            }
+            
+            closeModal('companyModal');
+        }
+
+        function addSocial() {
+            currentSocialIndex = -1;
+            document.getElementById('socialModalTitle').textContent = 'Add Social Link';
+            document.getElementById('social-name-input').value = '';
+            document.getElementById('social-url-input').value = '';
+            document.getElementById('socialModal').style.display = 'block';
+        }
+
+        function editSocial(index) {
+            currentSocialIndex = index;
+            document.getElementById('socialModalTitle').textContent = 'Edit Social Link';
+            document.getElementById('social-name-input').value = socialLinks[index].name;
+            document.getElementById('social-url-input').value = socialLinks[index].url;
+            document.getElementById('socialModal').style.display = 'block';
+        }
+
+        function saveSocial() {
+            const name = document.getElementById('social-name-input').value.trim();
+            const url = document.getElementById('social-url-input').value.trim();
+            
+            if (!name || !url) {
+                alert('Both name and URL are required.');
+                return;
+            }
+            
+            if (currentSocialIndex === -1) {
+                // Add new
+                socialLinks.push({ name, url });
+            } else {
+                // Update existing
+                socialLinks[currentSocialIndex] = { name, url };
+            }
+            
+            localStorage.setItem('cmsSocialLinks', JSON.stringify(socialLinks));
+            renderSocialLinks();
+            closeModal('socialModal');
+        }
+
+        function deleteSocial(index) {
+            socialToDelete = index;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function confirmDelete() {
+            if (socialToDelete > -1) {
+                socialLinks.splice(socialToDelete, 1);
+                localStorage.setItem('cmsSocialLinks', JSON.stringify(socialLinks));
+                renderSocialLinks();
+            }
+            closeModal('deleteModal');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modals when clicking outside of them
         window.onclick = function(event) {
-            const imageModal = document.querySelector('.image-edit-modal');
-            const linkModal = document.getElementById('link-edit-modal');
-            
-            if (event.target === imageModal) {
-                closeImageModal();
-            }
-            
-            if (event.target === linkModal) {
-                closeLinkModal();
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target === modals[i]) {
+                    modals[i].style.display = 'none';
+                }
             }
         };
     </script>
