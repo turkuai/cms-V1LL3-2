@@ -1,0 +1,24 @@
+name: Deploy to School FTP Server
+
+on:
+  push:
+    branches: ["server"]  # Yksi rivi, hakasulut ja lainausmerkit
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code  # Sisennys ja "-" stepin edessä
+        uses: actions/checkout@v4
+
+      - name: Sync files to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 194.197.245.5  # Tai "taikukkula.fi"
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./cms/     # Huom: "./" alussa viittaa FTP-juureen
+          local-dir: ./
+          protocol: ftp
+          port: 21
