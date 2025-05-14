@@ -49,11 +49,5 @@ function db_query($conn, $sql, $params = []) {
 }
 
 // Esimerkki käytöstä:
-try {
-    $result = db_query($conn, "SELECT * FROM links WHERE id = ?", [$_GET['id']]);
-    $data = $result->get_result()->fetch_all(MYSQLI_ASSOC);
-} catch (Exception $e) {
-    error_log($e->getMessage());
-    $data = [];
-}
+
 ?>
