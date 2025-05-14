@@ -1,3 +1,6 @@
+<?php
+// This file replaces the existing index.html
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,7 +116,6 @@
             margin: 5px 0;
         }
         
-        /* Admin Panel Styles */
         .admin-panel {
             position: fixed;
             top: 0;
@@ -237,7 +239,7 @@
     
     <div class="container">
         <nav class="nav-box">
-            <div class="logo-box editable" onclick="makeEditable(this)">LOGO</div>
+            <div class="logo-box editable" id="logo-box" onclick="makeEditable(this)">LOGO</div>
 
             <ul class="navbar">
                 <li><a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
@@ -274,9 +276,9 @@
         
         <div class="footer">
             <div class="footer-info">
-                <h2 class="editable" onclick="makeEditable(this)">Your company's name</h2>
-                <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p class="editable" onclick="makeEditable(this)">© 2024, Company's name, All rights reserved.</p>
+                <h2 class="editable" id="company-name" onclick="makeEditable(this)">Your company's name</h2>
+                <p class="editable" id="company-description" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="editable" id="company-copyright" onclick="makeEditable(this)">© 2024, Company's name, All rights reserved.</p>
             </div>
             
             <div class="footer-links">
@@ -293,7 +295,7 @@
         </div>
     </div>
     
-
+    <!-- Image editing modal -->
     <div class="image-edit-modal">
         <div class="modal-content">
             <h3>Change Image</h3>
@@ -305,7 +307,7 @@
         </div>
     </div>
     
-
+    <!-- Link editing modal -->
     <div class="image-edit-modal" id="link-edit-modal">
         <div class="modal-content">
             <h3>Edit Link</h3>
@@ -318,18 +320,40 @@
         </div>
     </div>
     
+    <!-- Logo upload modal -->
+    <div class="image-edit-modal" id="logo-upload-modal">
+        <div class="modal-content">
+            <h3>Upload Logo</h3>
+            <form id="logo-upload-form" enctype="multipart/form-data">
+                <input type="file" id="logo-file-input" name="logo" accept="image/*">
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeLogoModal()">Cancel</button>
+                    <button type="button" class="apply-btn" onclick="uploadLogo()">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
-
+        // Load all page data from server when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllPageData();
+        });
+        
         function makeEditable(element) {
             element.contentEditable = true;
             element.focus();
             
-
+            // Special handling for logo
+            if (element.id === 'logo-box') {
+                openLogoModal();
+                return;
+            }
+            
             element.onblur = function() {
                 element.contentEditable = false;
             };
             
-
             element.onkeydown = function(e) {
                 if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -338,7 +362,187 @@
             };
         }
         
-
+        // Load all page data from server
+        function loadAllPageData() {
+            fetch('footer_api.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Load footer data
+                    if (data.companyName) document.getElementById('company-name').textContent = data.companyName;
+                    if (data.description) document.getElementById('company-description').textContent = data.description;
+                    if (data.copyright) document.getElementById('company-copyright').textContent = data.copyright;
+                    
+                    // Load navigation links
+                    if (data.navLinks && data.navLinks.length > 0) {
+                        const navLinks = document.querySelectorAll('.navbar .editable-link');
+                        data.navLinks.forEach((link, index) => {
+                            if (index < navLinks.length) {
+                                const linkElement = navLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load footer links
+                    if (data.footerLinks && data.footerLinks.length > 0) {
+                        const footerLinks = document.querySelectorAll('.footer-links .editable-link');
+                        data.footerLinks.forEach((link, index) => {
+                            if (index < footerLinks.length) {
+                                const linkElement = footerLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load social links
+                    if (data.socialLinks && data.socialLinks.length > 0) {
+                        const socialLinks = document.querySelectorAll('.footer-social .editable-link');
+                        data.socialLinks.forEach((link, index) => {
+                            if (index < socialLinks.length) {
+                                const linkElement = socialLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load articles
+                    if (data.articles && data.articles.length > 0) {
+                        const articles = document.querySelectorAll('.article');
+                        data.articles.forEach((article, index) => {
+                            if (index < articles.length) {
+                                const articleElement = articles[index];
+                                if (article.title) articleElement.querySelector('h2.editable').textContent = article.title;
+                                if (article.content) articleElement.querySelector('p.editable').textContent = article.content;
+                                if (article.imageUrl) articleElement.querySelector('.image-placeholder img').src = article.imageUrl;
+                            }
+                        });
+                    }
+                    
+                    // Load logo
+                    if (data.logoPath && data.logoPath.length > 0) {
+                        const logoBox = document.getElementById('logo-box');
+                        logoBox.innerHTML = `<img src="${data.logoPath}" style="max-height: 50px; max-width: 100%;" alt="Logo">`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading page data:', error);
+                });
+        }
+        
+        // Enhanced saveChanges function to save all content
+        function saveChanges() {
+            // Collect footer data
+            const footerData = {
+                companyName: document.getElementById('company-name').textContent,
+                description: document.getElementById('company-description').textContent,
+                copyright: document.getElementById('company-copyright').textContent
+            };
+            // Collect navigation links
+            const navLinks = Array.from(document.querySelectorAll('.navbar .editable-link')).map(link => ({
+                text: link.textContent.replace('Edit Link', '').trim(),
+                url: link.href
+            }));
+            // Collect footer links
+            const footerLinks = Array.from(document.querySelectorAll('.footer-links .editable-link')).map(link => ({
+                text: link.textContent.replace('Edit Link', '').trim(),
+                url: link.href
+            }));
+            // Collect social links
+            const socialLinks = Array.from(document.querySelectorAll('.footer-social .editable-link')).map(link => ({
+                text: link.textContent.replace('Edit Link', '').trim(),
+                url: link.href
+            }));
+            // Collect articles data
+            const articles = Array.from(document.querySelectorAll('.article')).map(article => {
+                const title = article.querySelector('h2.editable').textContent;
+                const content = article.querySelector('p.editable').textContent;
+                const imageUrl = article.querySelector('.image-placeholder img').src;
+                return { title, content, imageUrl };
+            });
+            // Get logo path
+            const logoBox = document.getElementById('logo-box');
+            const logoPath = logoBox.querySelector('img') ? logoBox.querySelector('img').src : '';
+            // Combine all data
+            const allData = {
+                ...footerData,
+                navLinks,
+                footerLinks,
+                socialLinks,
+                articles,
+                logoPath
+            };
+            // Send to server
+            fetch('footer_api.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(allData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('All changes saved:', data);
+                alert('All changes saved successfully!');
+            })
+            .catch(error => {
+                console.error('Error saving data:', error);
+                alert('Error saving changes. Please try again.');
+            });
+        }
+        
+        // Open logo upload modal
+        function openLogoModal() {
+            document.getElementById('logo-upload-modal').style.display = 'flex';
+        }
+        
+        // Close logo upload modal
+        function closeLogoModal() {
+            document.getElementById('logo-upload-modal').style.display = 'none';
+        }
+        
+        // Upload logo image
+        function uploadLogo() {
+            const fileInput = document.getElementById('logo-file-input');
+            if (!fileInput.files.length) {
+                alert('Please select a file first.');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('logo', fileInput.files[0]);
+            
+            fetch('upload_image.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update logo box with the new image
+                    const logoBox = document.getElementById('logo-box');
+                    logoBox.innerHTML = `<img src="${data.filePath}" style="max-height: 50px; max-width: 100%;" alt="Logo">`;
+                    alert('Logo uploaded successfully!');
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+                closeLogoModal();
+            })
+            .catch(error => {
+                console.error('Error uploading logo:', error);
+                alert('Error uploading logo. Please try again.');
+                closeLogoModal();
+            });
+        }
+        
         let currentImageElement = null;
         
         function editImage(button) {
@@ -361,7 +565,6 @@
             closeImageModal();
         }
         
-
         let currentLinkElement = null;
         
         function editLink(button) {
@@ -384,7 +587,6 @@
                 const newUrl = document.getElementById('link-url-input').value;
                 
                 if (newText.trim() !== '') {
-  
                     const button = currentLinkElement.querySelector('.link-edit-btn');
                     currentLinkElement.textContent = newText;
                     currentLinkElement.appendChild(button);
@@ -397,15 +599,10 @@
             closeLinkModal();
         }
         
-
-        function saveChanges() {
-            alert('Changes saved! In a real application, this would save to a server.');
-
-        }
-
         window.onclick = function(event) {
             const imageModal = document.querySelector('.image-edit-modal');
             const linkModal = document.getElementById('link-edit-modal');
+            const logoModal = document.getElementById('logo-upload-modal');
             
             if (event.target === imageModal) {
                 closeImageModal();
@@ -413,6 +610,10 @@
             
             if (event.target === linkModal) {
                 closeLinkModal();
+            }
+            
+            if (event.target === logoModal) {
+                closeLogoModal();
             }
         };
     </script>
