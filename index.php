@@ -1,24 +1,5 @@
 <?php
 // This file replaces the existing index.html
-// Load environment variables
-foreach (parse_ini_file('.env') as $key => $value) {
-    $_ENV[$key] = $value;
-}
-
-// Include database connection
-require_once 'includes/database.php';
-
-// Fetch data for displaying in admin view
-$companyName = getSectionContent($conn, 'company_name');
-$description = getSectionContent($conn, 'company_description');
-$copyright = getSectionContent($conn, 'company_copyright');
-$logo = getSectionContent($conn, 'logo');
-$navLinks = getLinks($conn, 'nav');
-$footerLinks = getLinks($conn, 'footer');
-$socialLinks = getLinks($conn, 'social');
-
-// Get articles from the database
-$articles = getArticles($conn);
 ?>
 <!DOCTYPE html>
 <html>
@@ -258,62 +239,58 @@ $articles = getArticles($conn);
     
     <div class="container">
         <nav class="nav-box">
-            <div class="logo-box editable" id="logo-box" onclick="makeEditable(this)">
-                <?php if($logo): ?>
-                    <img src="<?= htmlspecialchars($logo) ?>" style="max-height: 50px; max-width: 100%;" alt="Logo">
-                <?php else: ?>
-                    LOGO
-                <?php endif; ?>
-            </div>
+            <div class="logo-box editable" id="logo-box" onclick="makeEditable(this)">LOGO</div>
 
             <ul class="navbar">
-                <?php foreach($navLinks as $link): ?>
-                    <li><a href="<?= htmlspecialchars($link['url']) ?>" class="editable-link">
-                        <?= htmlspecialchars($link['text']) ?>
-                        <button class="link-edit-btn" onclick="editLink(this)">Edit Link</button>
-                    </a></li>
-                <?php endforeach; ?>
+                <li><a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
+                <li><a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
+                <li><a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a></li>
             </ul>
         </nav>
         
         <div class="content-box">
-            <?php foreach($articles as $article): ?>
-                <div class="article">
-                    <h2 class="editable" onclick="makeEditable(this)"><?= htmlspecialchars($article['title']) ?></h2>
-                    <div class="text-and-image">
-                        <p class="editable" onclick="makeEditable(this)"><?= nl2br(htmlspecialchars($article['content'])) ?></p>
-                        <div class="image-placeholder">
-                            <img src="<?= htmlspecialchars($article['image_url']) ?>">
-                            <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
-                        </div>
+            <div class="article">
+                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
+                <div class="text-and-image">
+                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    <div class="image-placeholder">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
+                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
+            
+            <div class="article">
+                <h2 class="editable" onclick="makeEditable(this)">A title for your first article</h2>
+                <div class="text-and-image">
+                    <p class="editable" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    <div class="image-placeholder">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFUuOtK7W_UNjvXDx3Z9tCD14xTfWPFs3Wbw&s">
+                        <button class="image-upload-btn" onclick="editImage(this)">Change Image</button>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="footer">
             <div class="footer-info">
-                <h2 class="editable" id="company-name" onclick="makeEditable(this)"><?= htmlspecialchars($companyName) ?></h2>
-                <p class="editable" id="company-description" onclick="makeEditable(this)"><?= nl2br(htmlspecialchars($description)) ?></p>
-                <p class="editable" id="company-copyright" onclick="makeEditable(this)"><?= htmlspecialchars($copyright) ?></p>
+                <h2 class="editable" id="company-name" onclick="makeEditable(this)">Your company's name</h2>
+                <p class="editable" id="company-description" onclick="makeEditable(this)">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="editable" id="company-copyright" onclick="makeEditable(this)">© 2024, Company's name, All rights reserved.</p>
             </div>
             
             <div class="footer-links">
-                <?php foreach($footerLinks as $link): ?>
-                    <a href="<?= htmlspecialchars($link['url']) ?>" class="editable-link">
-                        <?= htmlspecialchars($link['text']) ?>
-                        <button class="link-edit-btn" onclick="editLink(this)">Edit Link</button>
-                    </a>
-                <?php endforeach; ?>
+                <a href="#" class="editable-link">Home<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">About<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">Blog<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
             </div>
             
             <div class="footer-social">
-                <?php foreach($socialLinks as $link): ?>
-                    <a href="<?= htmlspecialchars($link['url']) ?>" class="editable-link">
-                        <?= htmlspecialchars($link['text']) ?>
-                        <button class="link-edit-btn" onclick="editLink(this)">Edit Link</button>
-                    </a>
-                <?php endforeach; ?>
+                <a href="#" class="editable-link">Facebook<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">LinkedIn<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
+                <a href="#" class="editable-link">GitHub<button class="link-edit-btn" onclick="editLink(this)">Edit Link</button></a>
             </div>
         </div>
     </div>
@@ -360,7 +337,7 @@ $articles = getArticles($conn);
     <script>
         // Load all page data from server when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // No need to load data as we're fetching it directly in PHP
+            loadAllPageData();
         });
         
         function makeEditable(element) {
@@ -385,7 +362,83 @@ $articles = getArticles($conn);
             };
         }
         
-        // Enhanced saveChanges function to save all content to database
+        // Load all page data from server
+        function loadAllPageData() {
+            fetch('footer_api.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Load footer data
+                    if (data.companyName) document.getElementById('company-name').textContent = data.companyName;
+                    if (data.description) document.getElementById('company-description').textContent = data.description;
+                    if (data.copyright) document.getElementById('company-copyright').textContent = data.copyright;
+                    
+                    // Load navigation links
+                    if (data.navLinks && data.navLinks.length > 0) {
+                        const navLinks = document.querySelectorAll('.navbar .editable-link');
+                        data.navLinks.forEach((link, index) => {
+                            if (index < navLinks.length) {
+                                const linkElement = navLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load footer links
+                    if (data.footerLinks && data.footerLinks.length > 0) {
+                        const footerLinks = document.querySelectorAll('.footer-links .editable-link');
+                        data.footerLinks.forEach((link, index) => {
+                            if (index < footerLinks.length) {
+                                const linkElement = footerLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load social links
+                    if (data.socialLinks && data.socialLinks.length > 0) {
+                        const socialLinks = document.querySelectorAll('.footer-social .editable-link');
+                        data.socialLinks.forEach((link, index) => {
+                            if (index < socialLinks.length) {
+                                const linkElement = socialLinks[index];
+                                const button = linkElement.querySelector('.link-edit-btn');
+                                linkElement.textContent = link.text;
+                                linkElement.href = link.url;
+                                if (button) linkElement.appendChild(button);
+                            }
+                        });
+                    }
+                    
+                    // Load articles
+                    if (data.articles && data.articles.length > 0) {
+                        const articles = document.querySelectorAll('.article');
+                        data.articles.forEach((article, index) => {
+                            if (index < articles.length) {
+                                const articleElement = articles[index];
+                                if (article.title) articleElement.querySelector('h2.editable').textContent = article.title;
+                                if (article.content) articleElement.querySelector('p.editable').textContent = article.content;
+                                if (article.imageUrl) articleElement.querySelector('.image-placeholder img').src = article.imageUrl;
+                            }
+                        });
+                    }
+                    
+                    // Load logo
+                    if (data.logoPath && data.logoPath.length > 0) {
+                        const logoBox = document.getElementById('logo-box');
+                        logoBox.innerHTML = `<img src="${data.logoPath}" style="max-height: 50px; max-width: 100%;" alt="Logo">`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading page data:', error);
+                });
+        }
+        
+        // Enhanced saveChanges function to save all content
         function saveChanges() {
             // Collect footer data
             const footerData = {
@@ -396,50 +449,39 @@ $articles = getArticles($conn);
             // Collect navigation links
             const navLinks = Array.from(document.querySelectorAll('.navbar .editable-link')).map(link => ({
                 text: link.textContent.replace('Edit Link', '').trim(),
-                url: link.href,
-                type: 'nav'
+                url: link.href
             }));
             // Collect footer links
             const footerLinks = Array.from(document.querySelectorAll('.footer-links .editable-link')).map(link => ({
                 text: link.textContent.replace('Edit Link', '').trim(),
-                url: link.href,
-                type: 'footer'
+                url: link.href
             }));
             // Collect social links
             const socialLinks = Array.from(document.querySelectorAll('.footer-social .editable-link')).map(link => ({
                 text: link.textContent.replace('Edit Link', '').trim(),
-                url: link.href,
-                type: 'social'
+                url: link.href
             }));
             // Collect articles data
-            const articles = Array.from(document.querySelectorAll('.article')).map((article, index) => {
+            const articles = Array.from(document.querySelectorAll('.article')).map(article => {
                 const title = article.querySelector('h2.editable').textContent;
                 const content = article.querySelector('p.editable').textContent;
                 const imageUrl = article.querySelector('.image-placeholder img').src;
-                return { 
-                    title, 
-                    content, 
-                    image_url: imageUrl,
-                    name: `article_${index + 1}`
-                };
+                return { title, content, imageUrl };
             });
             // Get logo path
             const logoBox = document.getElementById('logo-box');
             const logoPath = logoBox.querySelector('img') ? logoBox.querySelector('img').src : '';
             // Combine all data
             const allData = {
-                sections: [
-                    { name: 'company_name', content: footerData.companyName },
-                    { name: 'company_description', content: footerData.description },
-                    { name: 'company_copyright', content: footerData.copyright },
-                    { name: 'logo', content: logoPath }
-                ],
-                links: [...navLinks, ...footerLinks, ...socialLinks],
-                articles: articles
+                ...footerData,
+                navLinks,
+                footerLinks,
+                socialLinks,
+                articles,
+                logoPath
             };
-            
             // Send to server
-            fetch('save_cms_data.php', {
+            fetch('footer_api.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
