@@ -1,5 +1,5 @@
 <?php
-include 'database.php'; // Include the database connection
+include 'includes/database.php'; // Include the database connection
 
 // Handle GET request (loading data)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
